@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가우바우보</title>
+    <style>
+        #computer {
+          width: 142px;
+          height: 200px;
+        }
+      </style>
+</head>
+<body>
+    <div id="computer"></div>
+<div>
+  <button id="scissors" class="btn">가위</button>
+  <button id="rock" class="btn">바위</button>
+  <button id="paper" class="btn">보</button>
+</div>
+<div id="score">0</div>
+<script>
+    const $computer = document.querySelector('#computer');
+    const $score = document.querySelector('#score');
+    const $rock = document.querySelector('#rock');
+    const $scissors = document.querySelector('#scissors');
+    const $paper = document.querySelector('#paper');
+    const IMG_URL = './rsp.png';
+    $computer.style.background = `url(${IMG_URL}) 0  0`;
+    /*200px(가위), -200px(바위), -440px(보)  */
+    $computer.style.backgroundSize = 'auto 200px';
+    // 뒷배경 넓이 (background) 가로는 auto, 세로는 200px
+    
+    const rspX /* 가위 바위 보의 그림 x축 좌표 */ = {
+        scissors : "0", rock : "-200px", paper : "-440px"};
+       
+    let computerChoice = 'scissors';
+    const changeComputerHand = () => {
+        if (computerChoice === 'rock') { // 바위면
+        computerChoice = 'paper';
+        } else if (computerChoice === 'scissors') { // 가위면
+        computerChoice = 'rock';
+        } else if (computerChoice === 'paper') { // 보면
+        computerChoice = 'scissors';
+        }
+        $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+        $computer.style.backgroundSize = 'auto 200px';
+    }
+  let intervalId = setInterval(changeComputerHand, 50);
+
+    let clickable = true;
+  const clickButton = () => {
+      clearInterval(intervalId);  
+      if(clickable){
+      clickable = false;
+      /* 점수 계산 및 화면 표시 */
+      const myChoice = event.target.id;
+      setTimeout(() =>{
+        clickable = true;
+        intervalId = setInterval(changeComputerHand, 50);
+      },1000);
+     }
+  };
+  $rock.addEventListener('click', clickButton);
+  $scissors.addEventListener('click', clickButton);
+  $paper.addEventListener('click', clickButton);
+</script>
+</body>
+</html>
